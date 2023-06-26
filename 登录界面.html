@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>账号登录</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    body {
+      background-image: url('1231.jpg'); /* 设置背景图像为名为 "background.jpg" 的图像 */
+      background-repeat: no-repeat; /* 不进行图像重复 */
+      background-size: cover; /* 图像将被缩放以适应背景区域大小 */
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 200px;
+      background-color: #00000000;
+      box-shadow: 0 0 150px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .checkbox {
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>账号登录</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="用户名或邮箱">
+      <input type="password" id="password" placeholder="密码">
+      <div class="checkbox">
+        <input type="checkbox" id="remember-me">
+        <label for="remember-me">记住密码</label>
+      </div>
+      <button type="submit" class="btn">登录</button>
+      <p class="error" id="error-message"></p>
+      <p>没有账号？<a href="#">注册</a></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      // 在此处进行身份验证和登录逻辑，可以使用AJAX发送请求到后端进行验证
+
+      // 示例：假设用户名为"user"，密码为"password"
+      if (username === "user" && password === "password") {
+        // 登录成功，跳转到其他页面或执行其他操作
+        alert("登录成功！");
+      } else {
+        // 登录失败，显示错误消息
+        document.getElementById("error-message").textContent = "用户名或密码错误";
+      }
+    });
+  </script>
+</body>
+</html>

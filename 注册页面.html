@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>用户注册</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    body {
+      background-image: url('1231.jpg'); /* 设置背景图像为名为 "background.jpg" 的图像 */
+      background-repeat: no-repeat; /* 不进行图像重复 */
+      background-size: cover; /* 图像将被缩放以适应背景区域大小 */
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 200px;
+      background-color: #00000000;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0px 150px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+
+    .form-group input[type="submit"] {
+      width: 100%; /* 调整宽度 */
+      height: 50px; /* 调整高度 */
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .form-group input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>用户注册</h2>
+    <form>
+      <div class="form-group">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="email">邮箱:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">确认密码:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="注册">
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工个人信息及评价</title>
+    <style>
+	/*定义基础颜色变量*/
+	    :root {
+            color1: #F2F2F2;
+        }
+        /* 样式定义 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(color1);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(color1);
+            margin-top: 50px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+			background-color: var(color1);
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .save-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-button {
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .rating-label {
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .rating-bar-container {
+            width: 300px;
+            height: 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        .rating-bar {
+            height: 100%;
+            background-color: #007bff;
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        .rating-value {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+		
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>员工个人信息及评价</h1>
+
+        <table>
+            <tr>
+                <th>职工号</th>
+                <td id="employee-id">001</td>
+            </tr>
+            <tr>
+                <th>姓名</th>
+                <td id="employee-name">张三</td>
+            </tr>
+            <tr>
+                <th>性别</th>
+                <td id="employee-gender">男</td>
+            </tr>
+            <tr>
+                <th>部门</th>
+                <td id="employee-department">销售部</td>
+            </tr>
+            <tr>
+                <th>出生日期</th>
+                <td id="employee-birthdate">1990-01-01</td>
+            </tr>
+            <tr>
+                <th>基本工资</th>
+                <td id="employee-basic-salary">5000</td>
+            </tr>
+            <tr>
+                <th>岗位津贴</th>
+                <td id="employee-position-allowance">1000</td>
+            </tr>
+            <tr>
+                <th>雇主评价</th>
+                <td id="employer-evaluation">优秀</td>
+            </tr>
+            <tr>
+                <th>就职经历</th>
+                <td>2020年x月x日-2023年x月x日 xx公司 销售经理</td>
+            </tr>
+            <tr>
+                <th>自我评价及需求</th>
+                <td><span id="self-evaluation">无.</span>
+				<button class="edit-button" onclick="editEvaluation()">编辑</button></td>
+            </tr>
+            <tr>
+                <th>综合评分</th>
+                <td>
+                    <div class="rating-container">
+                        <span class="rating-label">工作态度：</span>
+                        <div class="rating-bar-container">
+                            <div class="rating-bar" id="attitude-bar"></div>
+                        </div>
+                        <span class="rating-value" id="attitude-value">0.00</span>
+                    </div>
+                    <div class="rating-container">
+                        <span class="rating-label">基础能力：</span>
+                        <div class="rating-bar-container">
+                            <div class="rating-bar" id="ability-bar"></div>
+                        </div>
+                        <span class="rating-value" id="ability-value">0.00</span>
+                    </div>
+                    <div class="rating-container">
+                        <span class="rating-label">业务能力：</span>
+                        <div class="rating-bar-container">
+                            <div class="rating-bar" id="skill-bar"></div>
+                        </div>
+                        <span class="rating-value" id="skill-value">0.00</span>
+                    </div>
+                    <div class="rating-container">
+                        <span class="rating-label">责任感：</span>
+                        <div class="rating-bar-container">
+                            <div class="rating-bar" id="responsibility-bar"></div>
+                        </div>
+                        <span class="rating-value" id="responsibility-value">0.00</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <button class="save-button" onclick="saveEvaluation()" style="display: none;">保存</button>
+        <button class="cancel-button" onclick="cancelEditEvaluation()" style="display: none;">取消</button>
+    </div>
+	
+    <script>
+        // 编辑自我评价及需求
+function editEvaluation() {
+    var evaluationElement = document.getElementById("self-evaluation");
+    var editButton = document.querySelector(".edit-button");
+    var saveButton = document.querySelector(".save-button");
+    var cancelButton = document.querySelector(".cancel-button");
+
+    evaluationElement.contentEditable = true;
+    evaluationElement.style.border = "1px solid #ddd";
+    evaluationElement.style.padding = "5px";
+    editButton.style.display = "none";
+    saveButton.style.display = "inline-block";
+    cancelButton.style.display = "inline-block";
+}
+
+// 保存自我评价及需求
+function saveEvaluation() {
+    var evaluationElement = document.getElementById("self-evaluation");
+    var editButton = document.querySelector(".edit-button");
+    var saveButton = document.querySelector(".save-button");
+    var cancelButton = document.querySelector(".cancel-button");
+
+    evaluationElement.contentEditable = false;
+    evaluationElement.style.border = "none";
+    evaluationElement.style.padding = "0";
+    editButton.style.display = "inline-block";
+    saveButton.style.display = "none";
+    cancelButton.style.display = "none";
+}
+
+// 取消编辑自我评价及需求
+function cancelEditEvaluation() {
+    var evaluationElement = document.getElementById("self-evaluation");
+    var editButton = document.querySelector(".edit-button");
+    var saveButton = document.querySelector(".save-button");
+    var cancelButton = document.querySelector(".cancel-button");
+
+    evaluationElement.contentEditable = false;
+    evaluationElement.style.border = "none";
+    evaluationElement.style.padding = "0";
+    editButton.style.display = "inline-block";
+    saveButton.style.display = "none";
+    cancelButton.style.display = "none";
+}
+
+
+        // 更新综合评分
+        function updateRating() {
+            var attitudeBar = document.getElementById("attitude-bar");
+            var attitudeValue = document.getElementById("attitude-value");
+            var abilityBar = document.getElementById("ability-bar");
+            var abilityValue = document.getElementById("ability-value");
+            var skillBar = document.getElementById("skill-bar");
+            var skillValue = document.getElementById("skill-value");
+            var responsibilityBar = document.getElementById("responsibility-bar");
+            var responsibilityValue = document.getElementById("responsibility-value");
+
+            var attitude = 8.5; // 工作态度评分
+            var ability = 9.0; // 基础能力评分
+            var skill = 9.5; // 业务能力评分
+            var responsibility = 8.0; // 责任感评分
+
+            attitudeBar.style.width = attitude * 10 + "%";
+            attitudeValue.innerText = attitude.toFixed(2);
+            abilityBar.style.width = ability * 10 + "%";
+            abilityValue.innerText = ability.toFixed(2);
+            skillBar.style.width = skill * 10 + "%";
+            skillValue.innerText = skill.toFixed(2);
+            responsibilityBar.style.width = responsibility * 10 + "%";
+            responsibilityValue.innerText = responsibility.toFixed(2);
+        }
+
+        // 页面加载完成后更新评分
+        window.addEventListener("load", updateRating);
+    </script>
+</body>
+
+</html>
