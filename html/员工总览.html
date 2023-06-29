@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工信息表格</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .button-container button {
+            margin-right: 5px;
+        }
+		
+		body {
+  background-color: #f2f2f2;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: #333;
+  color: white;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #444;
+}
+
+th {
+  background-color: #4CAF50;
+}
+
+    </style>
+</head>
+<body>
+    <h2>员工信息表格</h2>
+    <table id="employee-table">
+        <tr>
+            <th>职工号</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>部门</th>
+            <th>出生日期</th>
+            <th>基本工资</th>
+            <th>岗位津贴</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td>001</td>
+            <td>张三</td>
+            <td>男</td>
+            <td>销售部</td>
+            <td>1990-01-01</td>
+            <td>5000</td>
+            <td>1000</td>
+            <td class="button-container">
+                <button onclick="showDetails(1)">详情</button>
+                <button onclick="editEmployee(1)">修改</button>
+                <button onclick="deleteEmployee(1)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>002</td>
+            <td>李四</td>
+            <td>女</td>
+            <td>人事部</td>
+            <td>1995-05-10</td>
+            <td>6000</td>
+            <td>800</td>
+            <td class="button-container">
+                <button onclick="showDetails(2)">详情</button>
+                <button onclick="editEmployee(2)">修改</button>
+                <button onclick="deleteEmployee(2)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>003</td>
+            <td>王五</td>
+            <td>男</td>
+            <td>财务部</td>
+            <td>1988-09-15</td>
+            <td>7000</td>
+            <td>1200</td>
+            <td class="button-container">
+                <button onclick="showDetails(3)">详情</button>
+                <button onclick="editEmployee(3)">修改</button>
+                <button onclick="deleteEmployee(3)">删除</button>
+            </td>
+        </tr>
+        <!-- 添加更多员工信息行 -->
+    </table>
+
+    <div id="add-employee-form" style="display: none; margin-top: 20px;">
+        <h3>添加员工</h3>
+        <label for="employee-id">职工号:</label>
+        <input type="text" id="employee-id" name="employee-id"><br><br>
+
+        <label for="name">姓名:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="gender">性别:</label>
+        <select id="gender" name="gender">
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select><br><br>
+
+        <label for="department">部门:</label>
+        <input type="text" id="department" name="department"><br><br>
+
+        <label for="birth-date">出生日期:</label>
+        <input type="date" id="birth-date" name="birth-date"><br><br>
+
+        <label for="base-salary">基本工资:</label>
+        <input type="number" id="base-salary" name="base-salary"><br><br>
+
+        <label for="allowance">岗位津贴:</label>
+        <input type="number" id="allowance" name="allowance"><br><br>
+
+        <button onclick="addEmployee()">添加</button><br><br>
+    </div>
+    
+    <button onclick="showAddEmployeeForm()" style="margin-top: 10px;">新增员工</button>
+
+    <script>
+        function showDetails(employeeId) {
+            // 根据员工ID执行相应的操作，例如显示详情页面
+            console.log("显示员工" + employeeId + "的详情");
+        }
+        
+        function editEmployee(employeeId) {
+            // 根据员工ID执行相应的操作，例如跳转到编辑页面
+            console.log("编辑员工" + employeeId);
+        }
+        
+        function deleteEmployee(employeeId) {
+            // 根据员工ID执行相应的操作，例如删除员工
+            console.log("删除员工" + employeeId);
+        }
+
+        function showAddEmployeeForm() {
+            var addEmployeeForm = document.getElementById("add-employee-form");
+            if (addEmployeeForm.style.display === "none") {
+                addEmployeeForm.style.display = "block";
+            } else {
+                addEmployeeForm.style.display = "none";
+            }
+        }
+
+        function addEmployee() {
+            var employeeId = document.getElementById("employee-id").value;
+            var name = document.getElementById("name").value;
+            var gender = document.getElementById("gender").value;
+            var department = document.getElementById("department").value;
+            var birthDate = document.getElementById("birth-date").value;
+            var baseSalary = document.getElementById("base-salary").value;
+            var allowance = document.getElementById("allowance").value;
+
+            // 在表格最后一行添加新的员工信息行
+            var table = document.getElementById("employee-table");
+            var newRow = table.insertRow(-1); // -1 表示插入到最后一行
+
+            var employeeIdCell = newRow.insertCell(0);
+            var nameCell = newRow.insertCell(1);
+            var genderCell = newRow.insertCell(2);
+            var departmentCell = newRow.insertCell(3);
+            var birthDateCell = newRow.insertCell(4);
+            var baseSalaryCell = newRow.insertCell(5);
+            var allowanceCell = newRow.insertCell(6);
+            var actionCell = newRow.insertCell(7);
+
+            employeeIdCell.innerHTML = employeeId;
+            nameCell.innerHTML = name;
+            genderCell.innerHTML = gender;
+            departmentCell.innerHTML = department;
+            birthDateCell.innerHTML = birthDate;
+            baseSalaryCell.innerHTML = baseSalary;
+            allowanceCell.innerHTML = allowance;
+            
+            // 操作列按钮
+            actionCell.innerHTML = '<div class="button-container">' +
+                '<button onclick="showDetails(' + employeeId + ')">详情</button>' +
+                '<button onclick="editEmployee(' + employeeId + ')">修改</button>' +
+                '<button onclick="deleteEmployee(' + employeeId + ')">删除</button>' +
+                '</div>';
+
+            // 清空表单数据
+            document.getElementById("employee-id").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("gender").value = "男";
+            document.getElementById("department").value = "";
+            document.getElementById("birth-date").value = "";
+            document.getElementById("base-salary").value = "";
+            document.getElementById("allowance").value = "";
+
+            // 隐藏添加员工表单
+            var addEmployeeForm = document.getElementById("add-employee-form");
+            addEmployeeForm.style.display = "none";
+        }
+    </script>
+</body>
+</html>
