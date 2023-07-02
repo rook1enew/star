@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>用户编辑页面</title>
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+</head>
+<body>
+<form class="layui-form" th:action="@{/updateUser}" method="post">
+  <div class="layui-col-md4 layui-col-md-offset4" style="margin-top: 10%;">
+	<div class="layui-form-item">
+      <input type="text" id="userId" name="userId" hidden>
+      <div class="layui-row">
+          <div class="layui-input-wrap">
+            <div class="layui-input-prefix">
+              <i class="layui-icon layui-icon-username"></i>
+            </div>
+            <input type="text" id="userName" name="userName" value="" lay-verify="required" placeholder="用户名" lay-reqtext="请填写用户名" autocomplete="off" class="layui-input">
+          </div>
+      </div>
+	</div>
+    <div class="layui-form-item">
+      <div class="layui-row">
+          <div class="layui-input-wrap">
+            <div class="layui-input-prefix">
+              <i class="layui-icon layui-icon-cellphone"></i>
+            </div>
+            <input type="text" id="mobileNum" name="mobileNum" value="" lay-verify="required|phone" placeholder="手机号" lay-reqtext="请填写手机号" autocomplete="off" class="layui-input">
+          </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-wrap">
+        <div class="layui-input-prefix">
+          <i class="layui-icon layui-icon-password"></i>
+        </div>
+        <input type="password" id="pwd" name="pwd" value="" placeholder="密码" autocomplete="off" class="layui-input" lay-affix="eye">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-wrap">
+        <div class="layui-input-prefix">
+          <i class="layui-icon layui-icon-password"></i>
+        </div>
+        <input type="password" name="confirmPassword" value="" lay-verify="confirmPassword" placeholder="确认密码" autocomplete="off" class="layui-input" lay-affix="eye">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-input-wrap">
+        <div class="layui-input-prefix">
+          <i class="layui-icon layui-icon-username"></i>
+        </div>
+        <input type="text" id="nickName" name="nickName" value="" lay-verify="required" placeholder="昵称" autocomplete="off" class="layui-input" lay-affix="clear">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <button class="layui-btn" lay-submit lay-filter="demo-reg">确认</button>
+    </div>
+  </div>
+</form>
+<!-- body 末尾处引入 layui -->
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+layui.use(function() {
+  var $ = layui.$,
+    form = layui.form,
+    layer = layui.layer,
+    util = layui.util;
+
+    // 使用layui提供的url解析方法获取userId
+    var url = layui.url();
+    var userId = url.search.userId;
+      var loadIndex = layer.msg("加载用户信息中", {
+        icon: 16,
+        shade: 0.01
+      });
+
+    // 使用ajax异步请求用户信息
+    $.ajax({
+       type: "GET",
+       url: "[[@{/userInfo}]]",
+       data: "userId=" + userId,
+       dataType: "json",
+       success: function(data) {
+         var success = data.success;
+         layer.close(loadIndex);
+         // 请求不成功
+         if (!success) {
+             layer.msg(data.msg, {icon: 0});
+             return;
+         }
+
+         // 请求成功，渲染表单数据
+         var userInfo = data.userInfo;
+         $("#userId").val(userInfo.id);
+         $("#userName").val(userInfo.userName);
+         $("#mobileNum").val(userInfo.mobileNum);
+         $("#nickName").val(userInfo.nickName);
+       }
+    });
+  
+    // 自定义验证规则
+    form.verify({
+    // 确认密码
+    confirmPassword: function(value, item){
+      var passwordValue = $('#pwd').val();
+      if(passwordValue && value && value !== passwordValue){
+        return '两次密码输入不一致';
+      }
+    }
+  });
+  
+  // 提交事件
+  form.on('submit(demo-reg)', function(data){
+    var field = data.field; // 获取表单字段值
+    return true;
+  });
+});
+</script>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+</head>
+<style>body{
+         background-color:white;
+		}</style>
+<body>
+<form class="layui-form"  th:action="@{/updateAssessment}" method="post">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">员工ID</label>
+      <div class="layui-input-inline layui-input-wrap">
+        <input type="text" id="employeeId" name="employeeId" lay-verify="required" autocomplete="off" lay-reqtext="请填写ID" lay-affix="clear" class="layui-input">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">普通文本域</label>
+    <div class="layui-input-block">
+      <textarea  type="text" id="hrAssessment" name="hrAssessment" lay-verify="required"  lay-affix="clear"  placeholder="请输入内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button type="submit" class="layui-btn" lay-submit lay-filter="demo-submitAssessment">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+layui.use(function() {
+  var $ = layui.$,
+    form = layui.form,
+    layer = layui.layer,
+    util = layui.util;
+
+    // 使用layui提供的url解析方法获取userId
+    var url = layui.url();
+    var userId = url.search.employeeId;
+      var loadIndex = layer.msg("加载用户信息中", {
+        icon: 16,
+        shade: 0.01
+      });
+
+    // 使用ajax异步请求用户信息
+    $.ajax({
+       type: "GET",
+       url: "[[@{/userInfo}]]",
+       data: "userId=" + userId,
+       dataType: "json",
+       success: function(data) {
+         var success = data.success;
+         layer.close(loadIndex);
+         // 请求不成功
+         if (!success) {
+             layer.msg(data.msg, {icon: 0});
+             return;
+         }
+
+         // 请求成功，渲染表单数据
+         var userInfo = data.userInfo;
+         $("#userId").val(userInfo.id);
+         $("#userName").val(userInfo.userName);
+         $("#mobileNum").val(userInfo.mobileNum);
+         $("#nickName").val(userInfo.nickName);
+       }
+    });
+</script>
+</body>
+</html>
