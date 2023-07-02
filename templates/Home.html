@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>恒星人才管理系统</title>
+  <link rel="stylesheet" th:href="@{/layui/css/layui.css}"/>
+  <link rel="icon" th:href="@{/image/logo.ico}" type="image/x-icon"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #333;
+      overflow: hidden;
+      padding-left: 60px;
+    }
+
+    .navbar a {
+      color: #fff;
+      text-align: center;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 35px;
+    }
+
+    .navbar a:hover {
+      background-color: #111;
+    }
+
+    .active {
+      font-size: 40px !important;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .login-register-form {
+      background-color: #fff;
+      padding: 20px;
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+    }
+
+    #homePage {
+      position: relative;
+    }
+
+    #homePage h1 {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 60px;
+    }
+
+    #homePage light#loginButton {
+      position: absolute;
+      top: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    #homePage light#registerButton {
+      position: absolute;
+      top: 300px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    #aboutPage {
+      position: relative;
+    }
+
+    #aboutPage h1 {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 60px;
+    }
+     #aboutPage h2 {
+      position: absolute;
+      top: 250px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 35px;
+    }
+
+    #aboutPage h3 {
+      position: absolute;
+      top: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 28px;
+    }
+    #aboutPage h7 {
+      position: absolute;
+      top: 480px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 30px;
+    }
+    #aboutPage h5{
+      position: absolute;
+      top: 410px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 30px;
+    }
+    #aboutPage h6 {
+      position: absolute;
+      top: 340px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 30px;
+    }
+    #aboutPage h8 {
+      position: absolute;
+      top: 550px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      color: #fff;
+      font-size: 30px;
+    }
+
+    #homePage img,
+    #aboutPage img {
+      position: relative;
+      z-index: 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #555;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+
+    light {
+      padding: 10px 20px;
+      background-color: transparent;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 30px;
+    }
+
+    .login-register-form {
+      border-radius: 10px;
+    }
+
+    .lr-button {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        letter-spacing: 4px;
+        overflow: hidden;
+        color: #03e9f4;
+        transition: .5s;
+        font-size: 30px;
+        padding: 10px 20px;
+    }
+
+    .lr-button:hover {
+         background: #03e9f4;
+         color: #fff;
+         border-radius: 30px;
+         box-shadow: 0 0 5px #03e9f4,
+                     0 0 25px #03e9f4,
+                     0 0 50px #03e9f4,
+                     0 0 100px #03e9f4;
+    }
+
+    img.logo-img {
+      position: absolute;
+      top: -2px; /* 调整图像相对于父元素顶部的位置 */
+      left: -2px; /* 调整图像相对于父元素左侧的位置 */
+    }
+
+    .artistic-text {
+        font-family: 'Font Name', cursive;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="navbar">
+  <img th:src="@{/image/LOGO(white).png}" width= "60px" height = "60px" alt="Logo" class="logo-img">
+  <a href="#" onclick="showPage('homePage', this)" id="homeLink" class="active" >首页</a>
+  <a href="#" onclick="showPage('aboutPage', this)" id="aboutLink">关于我们</a>
+</div>
+
+<!-- Home page -->
+<div id="homePage" class="page">
+  <h1 class="artistic-text">恒星人才管理系统 STAR ETM</h1>
+  <light id="loginButton" onclick="showLoginForm()" class="lr-button">登录</light>
+  <light id="registerButton" onclick="showRegisterForm()" class="lr-button">注册</light>
+
+  <img th:src="@{/image/p1.jpg}"border="0" alt="background">
+</div>
+
+<!-- About page -->
+<div id="aboutPage" class="page" style="display: none;">
+  <h1 class="artistic-text">关于恒星</h1>
+  <h3>一个完全免费的企业跨组织人才管理系统</h3>
+  <h2 >团队名称:恒星(star)</h2>
+  <h5 >产品经理:翟一恒</h5>
+  <h6 >项目经理:连梓铭</h6>
+  <h7 >技术总监:徐斌凯 </h7>
+  <h8 >成员:赵光辉     袁浩     卢颂宇</h8>
+  <img th:src="@{/image/p2.jpg}" alt="background">
+</div>
+
+<!-- Login/Register form -->
+<div class="overlay" id="overlay"></div>
+<div class="login-register-form" id="loginForm" style="display: none;">
+  <form class="layui-form" th:action="@{/syncLogin}" method="post">
+    <div class="demo-login-container">
+      <p style="color:red;font-size:small;text-align:center;" th:text="${session.msg}"></p>
+      <div class="layui-form-item">
+        <div class="layui-input-wrap">
+          <div class="layui-input-prefix">
+            <i class="layui-icon layui-icon-username"></i>
+          </div>
+          <input type="text" name="username" value="" lay-verify="required" placeholder="用户名" lay-reqtext="请填写用户名" autocomplete="off" class="layui-input" lay-affix="clear">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-wrap">
+          <div class="layui-input-prefix">
+            <i class="layui-icon layui-icon-password"></i>
+          </div>
+          <input type="password" name="password" value="" lay-verify="required" placeholder="密   码" lay-reqtext="请填写密码" autocomplete="off" class="layui-input" lay-affix="eye">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-row">
+          <div class="layui-col-xs7">
+            <div class="layui-input-wrap">
+              <div class="layui-input-prefix">
+                <i class="layui-icon layui-icon-vercode"></i>
+              </div>
+              <input type="text" name="captcha" value="" lay-verify="required" placeholder="验证码" lay-reqtext="请填写验证码" autocomplete="off" class="layui-input" lay-affix="clear">
+            </div>
+          </div>
+          <div class="layui-col-xs5">
+            <div style="margin-left: 10px;">
+              <img id="captcha" th:src="@{/captcha}" style="cursor:pointer;" title="点击刷新验证码">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form">
+        <input type="radio" id="Position1" name="userPosition" value="staff" title="员工" checked>
+        <input type="radio" id="Position2" name="userPosition" value="HR" title="HR">
+        <input type="radio" id="Position3" name="userPosition" value="leader" title="领导">
+      </div>
+      <div class="layui-form-item">
+        <input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
+        <a href="form.html#forget" style="float: right; margin-top: 7px;">忘记密码？</a>
+      </div>
+      <div class="layui-form-item">
+        <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="demo-login">登录</button>
+      </div>
+      <div class="layui-form-item demo-login-other">
+        <a th:href="@{/userRegister}">注册帐号</a>
+      </div>
+    </div>
+  </form>
+  <button onclick="hideLoginForm()">关闭</button>
+</div>
+
+<div class="login-register-form" id="registerForm" style="display: none;">
+  <form class="layui-form" th:action="@{/submitRegister}" method="post">
+      <div class="layui-form-item">
+        <div class="layui-row">
+          <div class="layui-input-wrap">
+            <div class="layui-input-prefix">
+              <i class="layui-icon layui-icon-username"></i>
+            </div>
+            <input type="text" id="userName" name="userName" value="" lay-verify="required" placeholder="用户名" lay-reqtext="请填写用户名" autocomplete="off" style="width: 300px;" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-row">
+          <div class="layui-input-wrap">
+            <div class="layui-input-prefix">
+              <i class="layui-icon layui-icon-cellphone"></i>
+            </div>
+            <input type="text" id="mobileNum" name="mobileNum" value="" lay-verify="required|phone" placeholder="手机号" lay-reqtext="请填写手机号" autocomplete="off" style="width: 350px;" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-wrap">
+          <div class="layui-input-prefix">
+            <i class="layui-icon layui-icon-password"></i>
+          </div>
+          <input type="password" id="pwd" name="pwd" value="" lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input" style="width: 350px;" lay-affix="eye">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-wrap">
+          <div class="layui-input-prefix">
+            <i class="layui-icon layui-icon-password"></i>
+          </div>
+          <input type="password" name="confirmPassword" value="" lay-verify="required|confirmPassword" placeholder="确认密码" autocomplete="off" class="layui-input" style="width: 350px;" lay-affix="eye">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-wrap">
+          <div class="layui-input-prefix">
+            <i class="layui-icon layui-icon-username"></i>
+          </div>
+          <input type="text" id="nickName" name="nickName" value="" lay-verify="required" placeholder="昵称" autocomplete="off" class="layui-input" style="width: 350px;" lay-affix="clear">
+        </div>
+      </div>
+      <div class="layui-form">
+        <input type="radio" id="userPosition1" name="userPosition" value="staff" title="员工" checked>
+        <input type="radio" id="userPosition2" name="userPosition" value="HR" title="HR">
+        <input type="radio" id="userPosition3" name="userPosition" value="leader" title="领导">
+      </div>
+      <div class="layui-form-item">
+        <input type="checkbox" name="agreement" lay-verify="required" lay-skin="primary" title="同意">
+        <a th:href="@{/userAgreement}" target="_blank" style="position: relative; top: 6px; left: -15px;">
+          <ins>用户协议</ins>
+        </a>
+      </div>
+      <div class="layui-form-item">
+        <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="demo-reg">注册</button>
+      </div>
+  </form>
+  <button onclick="hideRegisterForm()">关闭</button>
+</div>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+layui.use(function() {
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = layui.$;
+
+  $("#captcha").on("click", function() {
+    $(this).attr("src", "[[@{/captcha}]]?t=" + new Date().getTime());
+  });
+
+  // 提交事件
+  form.on('submit(demo-login)', function(data){
+    var field = data.field; // 获取表单字段值
+
+    // 如果要使用form表单来调用后台接口，请将下面代码注释，最后将return false改成return true;
+    var loadIndex = layer.msg("登录中", {
+        icon: 16,
+        shade: 0.01
+      });
+
+    // 使用ajax异步请求登录系统
+    $.ajax({
+       type: "POST",
+       url: "[[@{/login}]]",
+       contentType: "application/json",
+       data: JSON.stringify(field),
+       dataType: "json",
+       success: function(data) {
+         var success = data.success;
+         layer.close(loadIndex);
+
+         if (!success) {
+             layer.msg(data.msg, {icon: 0});
+             return;
+         }
+
+         var selectedValue = $("input[name='userPosition']:checked").val();
+
+         if (selectedValue === "staff") {
+            window.location.href = "employeeIndex";
+         } else if (selectedValue === "HR") {
+            window.location.href = "index";
+         } else if (selectedValue === "leader") {
+            window.location.href = "bossIndex";
+         }
+       }
+    });
+    // 阻止form表单使用同步请求的方式提交
+    return false;
+  });
+});
+</script>
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+layui.use(function(){
+  var $ = layui.$,
+    form = layui.form,
+    layer = layui.layer,
+    util = layui.util;
+
+  // 自定义验证规则
+  form.verify({
+    // 确认密码
+    confirmPassword: function(value, item){
+      var passwordValue = $('#pwd').val();
+      if(value !== passwordValue){
+        return '两次密码输入不一致';
+      }
+    }
+  });
+
+  // 提交事件
+  form.on('submit(demo-reg)', function(data){
+    var field = data.field; // 获取表单字段值
+
+    // 是否勾选同意
+    if(!field.agreement){
+      layer.msg('您必须勾选同意用户协议才能注册');
+      return false;
+    }
+
+    // 如果要使用form表单来调用后台接口，请将下面代码注释，最后将return false改成return true;
+    var loadIndex = layer.msg("注册中", {
+        icon: 16,
+        shade: 0.01
+      });
+
+    // 使用ajax异步请求用户注册接口
+    $.ajax({
+       type: "POST",
+       url: "[[@{/submitRegister}]]",
+       contentType: "application/json",
+       data: JSON.stringify(field),
+       dataType: "json",
+       success: function(data) {
+         var success = data.success;
+         layer.close(loadIndex);
+         // 注册不成功
+         if (!success) {
+             layer.msg(data.msg, {icon: 0});
+             return;
+         }
+         // 注册成功，打开首页
+         window.location.href= "[[@{/Home}]]";
+       }
+    });
+    // 阻止form表单使用同步请求的方式提交
+    return false;
+  });
+});
+</script>
+<script>
+    function showPage(pageId, link) {
+      // Highlight selected page
+      var navbarLinks = document.getElementsByClassName('navbar')[0].getElementsByTagName('a');
+      for (var i = 0; i < navbarLinks.length; i++) {
+        navbarLinks[i].classList.remove('active');
+        navbarLinks[i].style.fontSize = '35px';
+      }
+      link.classList.add('active');
+      link.style.fontSize = '40px';
+
+      // Hide all pages
+      var pages = document.getElementsByClassName('page');
+      for (var i = 0; i < pages.length; i++) {
+        pages[i].style.display = 'none';
+      }
+
+      // Show target page
+      var targetPage = document.getElementById(pageId);
+      if (targetPage) {
+        targetPage.style.display = 'block';
+      }
+    }
+
+    function showLoginForm() {
+      var overlay = document.getElementById('overlay');
+      var loginForm = document.getElementById('loginForm');
+      if (overlay && loginForm) {
+        overlay.style.display = 'block';
+        loginForm.style.display = 'block';
+      }
+    }
+
+    function hideLoginForm() {
+      var overlay = document.getElementById('overlay');
+      var loginForm = document.getElementById('loginForm');
+      if (overlay && loginForm) {
+        overlay.style.display = 'none';
+        loginForm.style.display = 'none';
+      }
+    }
+
+    function showRegisterForm() {
+      var overlay = document.getElementById('overlay');
+      var registerForm = document.getElementById('registerForm');
+      if (overlay && registerForm) {
+        overlay.style.display = 'block';
+        registerForm.style.display = 'block';
+      }
+    }
+
+    function hideRegisterForm() {
+      var overlay = document.getElementById('overlay');
+      var registerForm = document.getElementById('registerForm');
+      if (overlay && registerForm) {
+        overlay.style.display = 'none';
+        registerForm.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
